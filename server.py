@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 import numpy as np
 from sqlalchemy.sql.expression import func
+from flask_cors import CORS
 Base = declarative_base()
 def euclidean_distance(vector1, vector2):
     return np.linalg.norm(np.array(vector1) - np.array(vector2))
@@ -19,6 +20,7 @@ class Storyes(Base):
     storyVector = Column(String, nullable=False)
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/add_story', methods=['POST'])
 def add_story():
@@ -52,13 +54,16 @@ def add_story():
     try:
         session.add(new_story)
         session.commit()
-        return jsonify(data)
+        response = jsonify(data)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/get_stories', methods=['GET'])
 def get_stories():
-    random_texts = session.query(Storyes.storyText).order_by(func.random()).limit(5).all()
+    q_value = request.args.get('q')
+    random_texts = session.query(Storyes.storyText).order_by(func.random()).limit(q_value).all()
     random_texts = [text[0] for text in random_texts]
     data = {
         "randomText": random_texts
