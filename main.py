@@ -4,10 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 import numpy as np
 Base = declarative_base()
-class Storyes1(Base):
-    __tablename__ = 'Storyes1'
+class Storyes(Base):
+    __tablename__ = 'Storyes'
     __table_args__ = (
-        UniqueConstraint('storyid1', name='unique_id1'),
+        UniqueConstraint('storyid', name='unique_id'),
     )
 
     storyid1 = Column(Integer, primary_key=True, autoincrement=True)
