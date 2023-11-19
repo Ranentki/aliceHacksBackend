@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine, Column, String, Integer, UniqueConstraint
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
-import numpy as np
+
 Base = declarative_base()
 class Storyes(Base):
     __tablename__ = 'Storyes'
